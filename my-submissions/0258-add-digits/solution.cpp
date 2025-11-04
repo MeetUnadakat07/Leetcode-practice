@@ -1,7 +1,19 @@
 class Solution {
 public:
+    int sumOfDigits(int num) {
+        int sum = 0;
+        while(num > 0) {
+            int rem = num % 10;
+            sum += rem;
+            num /= 10;
+        }
+        return sum;
+    }
     int addDigits(int num) {
-        if(num == 0) return 0;
-        return 1 + (num - 1) % 9;
+        while(num > 9) {
+            int sum = sumOfDigits(num);
+            num = sum;
+        }
+        return num;
     }
 };
