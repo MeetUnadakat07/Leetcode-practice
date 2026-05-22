@@ -5,19 +5,19 @@ public:
         while(st<=end) {
             int mid = st+(end-st)/2;
             if(nums[mid]==target) return mid;
-            if(nums[st]<=nums[mid]) {
-                if(nums[st]<=target && target<=nums[mid]) {
+            if(nums[st]<=nums[mid]) {       // L1
+                if(nums[st]<=target && target<=nums[mid]) {     // Left
                     end = mid-1;
                 }
-                else {
+                else {                                          // Right
                     st=mid+1;
                 }
             }
-            else {
-                if(nums[mid]<=target && target<=nums[end]) {
+            else {                          // L2
+                if(nums[mid]<=target && target<=nums[end]) {    // Right
                     st=mid+1;
                 }
-                else {
+                else {                                          // Left
                     end = mid-1;
                 }
             }
