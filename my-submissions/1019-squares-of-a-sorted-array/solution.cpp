@@ -1,25 +1,42 @@
 class Solution {
 public:
     vector<int> sortedSquares(vector<int>& nums) {
-       int n = nums.size();
-    vector<int> result(n);
-    int left = 0, right = n - 1;
-    int index = n - 1; // Fill result array from the end
-    
-    while (left <= right) {
-        int leftSquare = nums[left] * nums[left];
-        int rightSquare = nums[right] * nums[right];
-
-        if (leftSquare > rightSquare) {
-            result[index] = leftSquare;
-            left++;
-        } else {
-            result[index] = rightSquare;
-            right--;
+        vector<int> pos, neg;
+        for(int i = 0; i < nums.size(); i++) {
+            if(nums[i] < 0) {
+                neg.push_back(nums[i]);
+            } else {
+                pos.push_back(nums[i]);
+            }
         }
-        index--; // Move index towards the beginning
-    }
+        for(int i = 0; i < neg.size(); i++) {
+            neg[i] = neg[i] * neg[i];
+        }
+        for(int i = 0; i < pos.size(); i++) {
+            pos[i] = pos[i] * pos[i];
+        }
 
-    return result;
+        reverse(neg.begin(), neg.end());
+
+        vector<int> ans;
+        int i = 0, j = 0;
+        while(i < neg.size() && j < pos.size()) {
+            if(neg[i] < pos[j]) {
+                ans.push_back(neg[i]);
+                i++;
+            } else {
+                ans.push_back(pos[j]);
+                j++;
+            }
+        }
+        while(i < neg.size()) {
+            ans.push_back(neg[i]);
+            i++;
+        }
+        while(j < pos.size()) {
+            ans.push_back(pos[j]);
+            j++;
+        }
+        return ans;
     }
 };
