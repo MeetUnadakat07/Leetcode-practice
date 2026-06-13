@@ -1,0 +1,26 @@
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        unordered_map<char, int> secretFreq;
+        unordered_map<char, int> guessFreq;
+        int a = 0, b = 0;
+
+        for(int i = 0; i < secret.size(); i++) {
+            if(secret[i] == guess[i]) {
+                a++;
+            } else {
+                secretFreq[secret[i]]++;
+                guessFreq[guess[i]]++;
+            }
+        }
+
+        for(auto ele : secretFreq) {
+            char digit = ele.first;
+            int count = ele.second;
+
+            b += min(count, guessFreq[digit]);
+        }
+
+        return to_string(a) + "A" + to_string(b) + "B";
+    }
+};
