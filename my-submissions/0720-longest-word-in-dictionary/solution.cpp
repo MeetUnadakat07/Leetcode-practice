@@ -1,0 +1,64 @@
+class Node {
+public:
+    unordered_map<char, Node *> children;
+    bool endOfWord;
+
+    Node() {
+        endOfWord = false;
+    }
+};
+
+class Trie {
+    Node *root;
+public:
+    Trie() {
+        root = new Node();
+    }
+
+    void insert(string key) {
+        Node *temp = root;
+
+        for(int i = 0; i < key.size(); i++) {
+            if(temp -> children.count(key[i]) == 0) {
+                temp -> children[key[i]] = new Node();
+            }
+            temp = temp -> children[key[i]];
+        }
+        temp -> endOfWord = true;
+    }
+
+    void longestString(Node *root, string &ans, string &temp) {
+        for(pair<char, Node *> child : root -> children) {
+            if(child.second -> endOfWord) {
+                temp.push_back(child.first);
+
+                if((temp.size() == ans.size() && temp < ans) || (temp.size() > ans.size())) {
+                    ans = temp;
+                }
+
+                longestString(child.second, ans, temp);
+                temp.pop_back();
+            }
+        }
+    }
+
+    string longestHelper() {
+        string ans = "";
+        string temp = "";
+        longestString(root, ans, temp);
+        return ans;
+    }
+};
+
+class Solution {
+public:
+    string longestWord(vector<string>& words) {
+        Trie trie;
+
+        for(int i = 0; i < words.size(); i++) {
+            trie.insert(words[i]);
+        }
+
+        return trie.longestHelper();
+    }
+};
