@@ -1,28 +1,34 @@
 class Solution {
 public:
-    int lcs(vector<int> &nums, vector<int> &nums2) {
-        int n = nums.size();
-        int m = nums2.size();
+    int binarySearch(vector<int> &arr, int target) {
+        int l = 0, r = arr.size() - 1;
+        int ans = r;
 
-        vector<vector<int>> dp(n + 1, vector<int> (m + 1, 0));
-
-        for(int i = 1; i <= n; i++) {
-            for(int j = 1; j <= m; j++) {
-                if(nums[i - 1] == nums2[j - 1]) {
-                    dp[i][j] = dp[i - 1][j - 1] + 1;
-                } else {
-                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
-                }
+        while(l <= r) {
+            int mid = (l + r) / 2;
+            if(arr[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+                ans = mid;
             }
         }
-        return dp[n][m];
+        return ans;
     }
 
     int lengthOfLIS(vector<int>& nums) {
-        unordered_set<int> s(nums.begin(), nums.end());
-        vector<int> nums2(s.begin(), s.end());
-        sort(nums2.begin(), nums2.end());
+        vector<int> arr;
+        arr.push_back(nums[0]);
 
-        return lcs(nums, nums2);
+        for(int i = 1; i < nums.size(); i++) {
+            if(nums[i] > arr.back()) {
+                arr.push_back(nums[i]);
+            } else {
+                int idx = binarySearch(arr, nums[i]);
+                arr[idx] = nums[i];
+            }
+        }
+
+        return arr.size();
     }
 };
