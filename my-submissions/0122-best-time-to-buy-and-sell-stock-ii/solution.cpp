@@ -1,31 +1,30 @@
 class Solution {
 public:
-    int rec(int i, int buyStatus, vector<int> &prices, vector<vector<int>> &dp, int n) {
-        if(i == n) return 0;
-
-        if(dp[i][buyStatus] != -1) {
-            return dp[i][buyStatus];
-        }
-
-        int ans = 0;
-        if(buyStatus == 0) {
-            int buy = -prices[i] + rec(i + 1, 1, prices, dp, n);
-            int notBuy = rec(i + 1, 0, prices, dp, n);
-            ans = max(buy, notBuy);
-        } else {
-            int sell = prices[i] + rec(i + 1, 0, prices, dp, n);
-            int notSell = rec(i + 1, 1, prices, dp, n);
-            ans = max(sell, notSell);
-        }
-
-        dp[i][buyStatus] = ans;
-        return ans;
-    }
-
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
+        if(n == 0) return 0;
+        // vector<vector<int>> dp(n, vector<int> (2, 0));
+        vector<int> prev(2, 0), curr(2, 0);
 
-        vector<vector<int>> dp(n, vector<int> (2, -1));
-        return rec(0, 0, prices, dp, n);
+        // hold -> am i holding or not. hold == 0 (not holding) hold == 1 (holding)
+
+        prev[0] = 0;
+        prev[1] = -prices[0];
+
+        for(int idx = 1; idx < n; idx++) {
+            for(int hold = 0; hold < 2; hold++) {
+                if(hold) {
+                    int buy = -prices[idx] + prev[0];
+                    int notBuy = prev[1];
+                    curr[hold] = max(buy, notBuy);
+                } else {
+                    int sell = prices[idx] + prev[1];
+                    int notSell = prev[0];
+                    curr[hold] = max(sell, notSell);
+                }
+            }
+            prev = curr;
+        }
+        return prev[0];
     }
 };
