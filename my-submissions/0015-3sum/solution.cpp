@@ -9,18 +9,19 @@ public:
                 continue;
             }
             int j = i + 1, k = n - 1;
-
             while(j < k) {
                 int sum = nums[i] + nums[j] + nums[k];
-                if(sum < 0) {
-                    j++;
-                } else if(sum > 0) {
+                if(sum > 0) {
                     k--;
+                } else if(sum < 0) {
+                    j++;
                 } else {
                     vector<int> temp = {nums[i], nums[j], nums[k]};
                     ans.push_back(temp);
+
                     j++;
                     k--;
+
                     while(j < k && nums[j] == nums[j - 1]) {
                         j++;
                     }
