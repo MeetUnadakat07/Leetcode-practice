@@ -10,6 +10,6 @@ public:
                 m[nums[i]] = i;
             }
         }
-        return {};
+        return {-1, -1};
     }
 };
