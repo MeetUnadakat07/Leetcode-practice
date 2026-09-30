@@ -1,10 +1,10 @@
 class Solution {
 public:
     int maxSubArray(vector<int>& nums) {
-        int maxSum=INT_MIN, currSum = 0;
-        for(int i=0;i<nums.size();i++) {
+        int currSum = 0, maxSum = -1e9;
+        for(int i = 0; i < nums.size(); i++) {
             currSum += nums[i];
-            maxSum = max(currSum, maxSum);
+            maxSum = max(maxSum, currSum);
             if(currSum < 0) {
                 currSum = 0;
             }
