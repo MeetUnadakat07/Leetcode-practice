@@ -1,21 +1,20 @@
 class Solution {
 public:
-    int rec(int i, int j, vector<vector<int>> &dp, vector<vector<int>> &grid) {
-        if(i < 0 || j < 0) return 0;
+    int paths(vector<vector<int>> &grid, int i, int j, int rows, int cols, vector<vector<int>> &dp) {
+        if(i >= rows || j >= cols) return 0;
         if(grid[i][j] == 1) return 0;
-        if(i == 0 && j == 0) return 1;
+        if(i == rows - 1 && j == cols - 1) return 1;
 
         if(dp[i][j] != -1) return dp[i][j];
 
-        int left = rec(i, j - 1, dp, grid);
-        int up = rec(i - 1, j, dp, grid);
-        return dp[i][j] = left + up;
+        dp[i][j] = paths(grid, i + 1, j, rows, cols, dp) + paths(grid, i, j + 1, rows, cols, dp);
+        return dp[i][j];
     }
 
-    int uniquePathsWithObstacles(vector<vector<int>>& grid) {
-        int m = grid.size();
-        int n = grid[0].size();
-        vector<vector<int>> dp(m, vector<int> (n, -1));
-        return rec(m - 1, n - 1, dp, grid);
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        int rows = obstacleGrid.size();
+        int cols = obstacleGrid[0].size();
+        vector<vector<int>> dp(rows, vector<int> (cols, -1));
+        return paths(obstacleGrid, 0, 0, rows, cols, dp);
     }
 };
